@@ -11,7 +11,10 @@ import {
   Code,
   Trophy,
   Package,
-  Briefcase,
+  ShoppingCart,
+  Gamepad2,
+  Shield,
+  UserCheck,
   User,
   Menu,
   X,
@@ -21,12 +24,17 @@ import { useAuthStore } from '@/lib/store';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
+  { name: 'Map', href: '/map', icon: Map },
   { name: 'Quest', href: '/quests', icon: Map },
   { name: 'NPC', href: '/npcs', icon: Users },
   { name: 'Editor', href: '/editor', icon: Code },
-  { name: 'Progress', href: '/progress', icon: Trophy },
+  { name: 'Mini Games', href: '/minigames', icon: Gamepad2 },
+  { name: 'Shop', href: '/shop', icon: ShoppingCart },
+  { name: 'Friends', href: '/friends', icon: UserCheck },
+  { name: 'Guilds', href: '/guilds', icon: Shield },
   { name: 'Inventory', href: '/inventory', icon: Package },
-  { name: 'Portfolio', href: '/portfolio', icon: Briefcase },
+  { name: 'Portfolio', href: '/portfolio', icon: Trophy },
+  { name: 'Progress', href: '/progress', icon: Trophy },
   { name: 'Profile', href: '/profile', icon: User },
 ];
 

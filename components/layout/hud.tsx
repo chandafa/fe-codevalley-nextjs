@@ -1,16 +1,19 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Bell, Clock, Coins } from 'lucide-react';
+import { Bell, Clock, Coins, Users, Wifi, WifiOff } from 'lucide-react';
 import { XPBar } from '@/components/ui/xp-bar';
-import { useAuthStore, useGameStore } from '@/lib/store';
+import { useAuthStore, useGameStore, useFriendsStore } from '@/lib/store';
 import { api } from '@/lib/api';
+import { wsManager } from '@/lib/websocket';
 
 export function HUD() {
   const { user } = useAuthStore();
   const { dailyTasks, notifications } = useGameStore();
+  const { onlineFriends } = useFriendsStore();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [unreadNotifications, setUnreadNotifications] = useState(0);
+  const [isOnline, setIsOnline] = useState(true);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -23,6 +26,17 @@ export function HUD() {
   useEffect(() => {
     setUnreadNotifications(notifications.length);
   }, [notifications]);
+
+  useEffect(() => {
+    const checkConnection = () => {
+      setIsOnline(wsManager.isConnected());
+    };
+    
+    const interval = setInterval(checkConnection, 5000);
+    checkConnection();
+    
+    return () => clearInterval(interval);
+  }, []);
 
   if (!user) return null;
 
@@ -43,12 +57,25 @@ export function HUD() {
             <div className="hidden sm:block">
               <h2 className="text-sm font-semibold text-gray-900">{user.username}</h2>
               <p className="text-xs text-gray-500">Level {user.level}</p>
+              <div className="flex items-center gap-1 text-xs">
+                {isOnline ? (
+                  <>
+                    <Wifi className="w-3 h-3 text-green-500" />
+                    <span className="text-green-500">Online</span>
+                  </>
+                ) : (
+                  <>
+                    <WifiOff className="w-3 h-3 text-red-500" />
+                    <span className="text-red-500">Offline</span>
+                  </>
+                )}
+              </div>
             </div>
           </div>
-          <div className="hidden md:block w-48">
+          <div className="hidden lg:block w-48">
             <XPBar
               currentXP={user.xp}
-              nextLevelXP={user.xpToNext}
+              nextLevelXP={user.exp_to_next || 1000}
               level={user.level}
               showLevel={false}
             />
@@ -57,6 +84,22 @@ export function HUD() {
 
         {/* Right: Stats and notifications */}
         <div className="flex items-center gap-4">
+          {/* Online friends count */}
+          <div className="hidden sm:flex items-center gap-2 text-sm">
+            <Users className="w-4 h-4 text-green-500" />
+            <span className="text-gray-600">
+              {onlineFriends.length} online
+            </span>
+          </div>
+
+          {/* User coins */}
+          <div className="hidden sm:flex items-center gap-2 text-sm">
+            <Coins className="w-4 h-4 text-yellow-500" />
+            <span className="text-gray-600 font-medium">
+              {user?.coins || 0}
+            </span>
+          </div>
+
           {/* Daily tasks progress */}
           <div className="hidden sm:flex items-center gap-2 text-sm">
             <div className="w-2 h-2 bg-green-500 rounded-full"></div>
