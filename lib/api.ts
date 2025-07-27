@@ -310,6 +310,36 @@ export const api = {
       apiClient.get<ApiResponse<any>>('/api/v1/stats/me'),
   },
 
+  // World & Map System
+  world: {
+    getMapState: (mapName: string) =>
+      apiClient.get<ApiResponse<any>>(`/api/v1/world/maps/${mapName}/state`),
+    
+    getPosition: () =>
+      apiClient.get<ApiResponse<{ x: number; y: number }>>('/api/v1/world/position'),
+    
+    teleport: (data: { map_name: string; pos_x: number; pos_y: number }) =>
+      apiClient.post<ApiResponse<any>>('/api/v1/world/teleport', data),
+    
+    getTime: () =>
+      apiClient.get<ApiResponse<any>>('/api/v1/world/time'),
+  },
+
+  // Code Farming System
+  farming: {
+    getFarms: () =>
+      apiClient.get<ApiResponse<any[]>>('/api/v1/farming'),
+    
+    plant: (data: { plot_x: number; plot_y: number; code_type: string }) =>
+      apiClient.post<ApiResponse<any>>('/api/v1/farming/plant', data),
+    
+    water: (id: string) =>
+      apiClient.post<ApiResponse<any>>(`/api/v1/farming/${id}/water`),
+    
+    harvest: (id: string) =>
+      apiClient.post<ApiResponse<any>>(`/api/v1/farming/${id}/harvest`),
+  },
+
   // Daily tasks endpoints
   dailyTasks: {
     today: () =>

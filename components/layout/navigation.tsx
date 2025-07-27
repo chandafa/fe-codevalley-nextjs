@@ -24,6 +24,7 @@ import { useAuthStore } from '@/lib/store';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
+  { name: 'Game World', href: '/game', icon: Map },
   { name: 'Map', href: '/map', icon: Map },
   { name: 'Quest', href: '/quests', icon: Map },
   { name: 'NPC', href: '/npcs', icon: Users },

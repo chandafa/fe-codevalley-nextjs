@@ -62,6 +62,36 @@ class WebSocketManager {
 
   private setupEventHandlers() {
     // Handle real-time events from backend
+    this.on('player_position_update', (data) => {
+      // Handle other players' position updates
+      console.log('Player position update:', data);
+    });
+
+    this.on('world_object_update', (data) => {
+      // Handle world object changes (trees chopped, etc.)
+      console.log('World object update:', data);
+    });
+
+    this.on('npc_position_update', (data) => {
+      // Handle NPC movement
+      console.log('NPC position update:', data);
+    });
+
+    this.on('time_update', (data) => {
+      // Handle game time progression
+      console.log('Time update:', data);
+    });
+
+    this.on('season_change', (data) => {
+      // Handle seasonal changes
+      console.log('Season change:', data);
+    });
+
+    this.on('interaction_result', (data) => {
+      // Handle interaction results
+      console.log('Interaction result:', data);
+    });
+
     this.on('quest_update', (data) => {
       const { updateQuest } = useGameStore.getState();
       updateQuest(data);
